@@ -1,0 +1,51 @@
+1. 三合一
+2. 当天练习独立完成
+3. 完成下列功能
+    class Wife:
+        def __init__(self, name="", height=0, face_score=0):
+            self.name = name
+            self.height = height
+            self.face_score = face_score
+    list_wife = [
+        Wife("双儿", 170, 98),
+        Wife("阿珂", 173, 100),
+        Wife("苏荃", 160, 99),
+        Wife("丽丽", 167, 90),
+        Wife("芳芳", 168, 92),
+        Wife("苏荃", 160, 99),
+    ]
+    (1). 根据格式打印老婆对象:xx的身高是xx,颜值是xx.
+        效果：print(Wife("双儿", 170, 98))
+             双儿的身高是170,颜值是98.
+    (2). 判断阿珂是否在列表中 Wife("阿珂") in list_wife
+    (3). 计算苏荃在列表中存在的个数list_wife.count(Wife("苏荃"))
+    (4). 查找颜值最高的老婆对象max(list_wife)
+    (5). 根据颜值对老婆列表进行升序排列list_wife.sort()
+
+4. 小明使用手机打电话
+   要求:增加座机,卫星电话时不影响小明.
+
+5. 画出下列代码内存图
+    map = [
+        [2, 2, 8, 16],
+        [4, 2, 0, 2],
+        [2, 4, 2, 4],
+        [0, 4, 0, 4],
+    ]
+    list_merge = map[0]
+    list_merge[0] = 0
+    print(map[0][0])# ?
+
+    list_merge = map[1][::-1]
+    list_merge[0] = 0
+    map[1][::-1] = list_merge
+    print(map[1]) # ?
+
+6. (选做)完成2048核心算法
+    定义函数,实现向左移动(操作map)
+    思想:取出每行交给list_merge,再调用merge函数处理数据
+
+    定义函数,实现向右移动(操作map)
+    思想:取出每行反向切片交给list_merge,
+        再调用merge函数处理数据(操作新列表)
+        最后还给map

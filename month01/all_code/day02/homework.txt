@@ -1,0 +1,52 @@
+作业
+1. 三合一(文档/代码/图片)
+2. 当天练习独立完成
+3. 画出下列代码内存图,说出终端显示结果
+    1)
+        data01 = 100
+        data02 = 200
+        data03 = data01 + data02
+        data01 = 200
+        print(data03) #300
+    2)
+        bridegroom_name = "武大郎"
+        bride_name = "潘金莲"
+        temp = bridegroom_name
+        bridegroom_name = bride_name
+        bride_name = temp
+        print("交换后的新郎：" + bridegroom_name)  #
+        print("交换后的新娘：" + bride_name)  #
+    3)
+    number = 1234
+    # 方法1
+    unit01 = number % 10
+    unit02 = number // 10 % 10
+    unit03 = number // 100 % 10
+    unit04 = number // 1000
+    result = unit01 + unit02 + unit03 + unit04
+
+    # 方法2
+    result = number % 10
+    result += number // 10 % 10
+    result += number // 100 % 10
+    result += number // 1000
+
+4. 根据父母身高,预测儿子身高.
+    步骤:获取父亲身高
+        获取母亲身高
+        显示儿子身高
+    公式:(父亲身高+母亲身高)*0.54
+
+5. 温度转换器：
+    摄氏度 = （华氏度 - 32） 除以 1.8
+    在终端中录入摄氏度，计算华氏度
+
+6. 根据工资计算个人社保缴纳费用
+    步骤：在终端中录入工资,根据公式计算,显示缴纳费用
+    公式：养老保险8% + 医疗保险2% + 3元 + 失业保险0.2% + 公积金12%
+
+7. 阅读
+    链接：https://pan.baidu.com/s/1JYK5A91CvBg36IhRphiyrg
+    提取码：qitx
+
+    程序员的数学第一章：0的故事

@@ -1,0 +1,75 @@
+作业
+1. 三合一
+2. 当天练习独立完成
+3. 画出下列代码内存图
+   找出打印结果
+g01 = 100
+g02 = 100
+
+def func01():
+    g01 = 200
+
+def func02():
+    global g02
+    g02 = 200
+
+func01()
+print(g01)  #
+func02()
+print(g02)  #
+
+
+class MyClass:
+    cls01 = 300
+
+    def __init__(self):
+        self.ins01 = 400
+        self.ins01 += 1
+        MyClass.cls01 += 1
+
+instance01 = MyClass()
+print(instance01.ins01)  # ?
+print(MyClass.cls01)  # ?
+
+instance02 = MyClass()
+print(instance02.ins01)  # ?
+print(MyClass.cls01)  # ?
+
+4. 使用封装数据的思想
+   创建员工类/部门类,修改实现下列功能.
+    1. 定义函数,打印所有员工信息,格式：xx的员工编号是xx,部门编号是xx,月薪xx元.
+    2. 定义函数,打印所有月薪大于2w的员工信息,格式：xx的员工编号是xx,部门编号是xx,月薪xx元.
+    3. 定义函数,打印所有员工的部门信息,格式：xx的部门是xx,月薪xx元.
+    4. 定义函数,查找薪资最少的员工
+    5. 定义函数,根据薪资对员工列表升序排列
+
+    # 员工列表
+    list_employees = [
+        {"eid": 1001, "did": 9002, "name": "师父", "money": 60000},
+        {"eid": 1002, "did": 9001, "name": "孙悟空", "money": 50000},
+        {"eid": 1003, "did": 9002, "name": "猪八戒", "money": 20000},
+        {"eid": 1004, "did": 9001, "name": "沙僧", "money": 30000},
+        {"eid": 1005, "did": 9001, "name": "小白龙", "money": 15000},
+    ]
+
+    # 部门列表
+    list_departments = [
+        {"did": 9001, "title": "教学部"},
+        {"did": 9002, "title": "销售部"},
+    ]
+
+5. 创建电脑类,保护数据在有效范围内
+        数据:型号,   CPU型号,    内存大小,    硬盘大小
+                不超过10个字符    大于0    元组长度大于1
+    class Computer:
+        def __init__(self, model_number="", cpu="", memory=0, hard_disk=()):
+            self.model_number = model_number
+            self.cpu = cpu
+            self.memory = memory
+            self.hard_disk = hard_disk
+
+    alienware = Computer("外星人ALW17M", "Intel i7", 16, (256, 1024))
+    print(alienware.model_number)
+    print(alienware.cpu)
+    print(alienware.memory)
+    print(alienware.hard_disk)

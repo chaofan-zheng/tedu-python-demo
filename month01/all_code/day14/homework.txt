@@ -1,0 +1,11 @@
+作业
+1. 员工信息管理系统
+    添加/显示/删除/修改
+    class Employee:
+        def __init__(self, eid, did, name, money):
+            self.eid = eid
+            self.did = did
+            self.name = name
+            self.money = money
+
+2. 准备面向对象答辩
