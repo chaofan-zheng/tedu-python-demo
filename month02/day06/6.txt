@@ -1,0 +1,49 @@
+前情回顾
+
+1. 数据库
+
+   * 数据库
+   * 数据库管理系统
+   * 数据库分类  （关系型 非关系型）
+   * 关系型数据库: 表  字段  记录
+   * mysql特点: 开源  关系  中型  c/c++
+   * mysql的安装方法
+   * mysql 启动和连接方法
+
+2. SQL语句   不区分大小写  结尾用;
+
+   数据库
+      create database [db];
+      show databases;
+      use [db];
+      select database();
+      drop database [db];
+
+   数据表
+      数据类型： 数字   字符串
+      字段约束： primary key
+               auto_increment
+               not null
+               default [val]
+               unsigned
+               comment
+
+      create table [tb] (col type 约束,...);
+      show create table [tb];
+      show tables;
+      desc [tb];
+      drop table [tb];
+
+    数据操作 ：  增删改查
+      insert into [tb] (col,...) values (val1,...);
+
+      select col1,col2 from [tb] where..
+
+      where子句 ：
+      算数  + - * / %
+      比较  > < = !=  between  in   is
+      逻辑   not and or
+
+
+作业： 1. 两天的语句总结回顾
+      2. 今天的练习，没做出来的自己完成

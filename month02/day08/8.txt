@@ -1,0 +1,73 @@
+前情回顾
+
+1. 索引
+
+   功能： 提高查询效率
+   使用： 数据量比较大，经常进行查询操作
+   分类： 普通  唯一  主键
+
+   create table [tb](
+   ....,
+   index [indexName](col),
+   unique [indexName](col),
+   );
+   create index [indexName] on [tb](col);
+   show index from [tb];
+   drop index [indexName] on [tb];
+
+2. 外键约束
+   * 有时候有关联的数据放在一张表会产生冗余
+   * 拆字段，分多表存储
+   * 为表达关系从表引入关系字段
+   * 为了约束从表关系字段的值增加外键约束
+   * 建立外键约束后对主表被关联的字段也有约束
+
+   constraint [外键名称]
+   foreign key (外键字段)
+   references 主表(主键)
+
+
+   删除 ： alter table [tb] drop foreign key[fk_name]
+
+3. 表关系
+
+   一对一   一对多   多对多
+
+   E-R
+
+4. 表关联查询
+
+  简单的多表查询：  select .. from tb1,tb2 where tb1.col = tb2.col
+
+  内连接： tb1 inner join tb2 on [条件]
+  外连接：
+    左连接：tb1 left join tb2 on [条件]
+    右连接：tb1 right join tb2 on [条件]
+
+  更多表连接
+    select * from
+    tb1 left join tb2 on tb1.col=tb2.col
+    left join tb3 on tb1.col=tb3.col
+    left join tb4 on ....
+    where ...
+    group by ...
+
+
+练习1： 编写一个函数，传入两个学生的ID
+返回这两个学生的分数之差
+
+练习2 ： 编写一个存储过程，传入一个而学生
+姓名，打印出这个学生的信息，并且 在爱好表中
+加入这个学生，喜欢画画
+
+
+作业： 1. MySQL的语句总复习
+         xmind图 进行整理
+
+      2. 查询综合练习 自己没写出的再写
+      3. 学生管理系统程序
+
+
+
+
+

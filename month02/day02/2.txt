@@ -1,0 +1,75 @@
+前情回顾
+
+1.  什么是操作系统 OS
+
+2.  Linux  工作环境
+  特点：开源  网络功能强大  跨平台  多用户
+  结构：内核 文件系统  命令解释  应用
+  应用：服务器
+
+3. 文件系统
+  Linux文件系统结构：树型
+  文件位置的表达：绝对路径  相对路径
+
+4. Linux命令   shell解释器
+man ls  cd  mkdir rm mv cp
+zip  tar
+通配符   管道
+==============================
+
+命令难点示例
+df -Th | grep "ext4"
+
+ln -s /home/tarena/month02/day02/hello.py  ~/hello
+
+
+命令练习
+
+生成一个文件my.log，第一行是当前时间
+后面写入/etc/mysql内的文件详细信息
+最后写入自己的署名
+date > my.log
+echo "" >> my.log
+ls -l /etc/mysql >> my.log
+echo "" >> my.log
+echo "Name:Levi" >> my.log
+
+vi 编写个程序，求1--20之间所有奇数
+的乘积
+
+修改2048程序的执行权限和执行方法
+让我们能在主目录下直接输入
+game2048 运行之
+
+1. 在启动入口程序中增加
+#!/usr/bin/python3
+
+2. 让启动程序有执行权限
+chmod 777 main.py
+
+3. 在主目录添加软连接
+ln -s  xxxx/main.py  ~/game2048
+
+Linux 总结
+1. Linux操作系统构成
+2. Linux操作系统特点和应用
+3. Linux文件系统结构 文件位置表达
+4. 常用的Linux命令
+5. 压缩解压  创建用户  远程访问
+   apt安装
+6. 使用vi做简单的修改编写工作
+7. Linux终端运行Python项目
+
+能够熟练使用Linux环境完成开发工作
+
+作业：
+1. 今天的命令操作 再写一遍
+2. 再创建一个用户，环境的实验
+3. 笔记和知识点整理
+
+函数看看
+
+
+
+
+

@@ -1,0 +1,57 @@
+练习1
+描述 month01中第一天内的homework.txt
+位置
+
+绝对路径：/home/tarena/month01/day01/homework.txt
+
+相对路径：../month01/day01/homework.txt
+（在音乐目录下工作）
+
+命令练习：
+
+    ls : 查看在根下有etc文件夹，下的内容
+         ls /etc
+
+    cd :  ~/month02/day01 --> ~/音乐
+         cd ../../音乐
+         cd /home/tarena/音乐
+         cd ~/音乐
+
+    touch mkdir rm:
+    在主目录下创建一个文件夹叫“无用”,在该
+    文件夹下创建一个文件 a.py，然后删除这个
+    文件夹
+    mkdir ~/无用
+    touch ~/无用/a.py
+    rm -r ~/无用
+
+    通配符：
+    在目录下 创建文件 file1.txt
+    file_23.txt  file2.txt  file_a.txt
+    删除 file数字.txt 文件
+
+    rm file?.txt
+    rm file_*.txt
+
+    管道： 统计/etc有多少个文件
+    ls /etc | wc -w
+
+    压缩
+    将第一阶段老师给的所有代码压缩为zip格式
+    Phase_1.zip
+    zip -r Phase_1.zip  month01
+
+    将自己写的所有代码压缩为 bz2格式
+    tar -cjf file.tar.bz2 myself
+
+
+较难命令
+grep  "hello"  hello.py
+find . -name demo11.py
+tar -xvf file.tar.bz2 解压
+tar -czf file.tar.gz file1 file2..
+tar -cjf file.tar.bz2 file1 file2..
+
+作业：
+1. 今天的命令在过一遍
+2. markdown学习

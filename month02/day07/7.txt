@@ -1,0 +1,54 @@
+前情回顾
+
+1. 修改  删除 表修改
+   update [tb] set col=val,... where..
+   delete from [tb] where ..
+
+   alter table [tb]  add/drop/modify..
+
+2. 时间数据类型
+   date   time   datetime
+   now()
+
+3. 高级查询
+
+   模糊查询 ： like  %  _
+   重命名 ：  as
+   排序 ： order by [col] desc
+   限制（分页）：limit  offset
+   联合查询： union all
+   子查询： from后  查询结果作为一个数据表
+          where子句  提供一个值
+
+4. 聚合
+
+ 聚合函数： sum()  max()  min()
+          avg() count()
+
+ 聚合分组： group by [col]
+
+ 聚合筛选： having
+
+ 去重： distinct
+ 运算
+
+
+练习1： 根据所学关系模型完成用户朋友圈
+数据表的创建
+
+作业：
+1. 将今天学的语句熟练
+
+（基础版）
+将book表拆分为三个表
+书籍   作家   出版社
+自行定义字段和表关系，画出E-R图
+完成标的创建
+
+（提高版）
+在完成基础版的前提下，尝试完成
+笔记中的综合查找练习
+
+
+
+

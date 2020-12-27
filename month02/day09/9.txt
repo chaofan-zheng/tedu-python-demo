@@ -1,0 +1,65 @@
+前情回顾
+
+1. 视图
+  作用： 简化复杂操作，提取整理部分数据，
+        结构更加清晰，保证数据安全
+
+  create [or replace] view [view] as [select]
+  drop view [if exists] [view]
+
+2. 函数和存储过程
+
+   函数 ： 有返回值  获取一个结果值
+
+   存储过程 ： 没有返回值  过程中的逻辑
+
+   delimiter $$
+
+   create function [func](...)
+   returns return_type
+   begin
+        declare a int;
+        函数体
+        return
+   end
+
+   set @a=1;
+   create procedure [proc](...)
+   begin
+        declare a int;
+        函数体
+   end
+   call st();
+
+   drop function/procedure [name]
+
+3. 事务控制
+
+   事务 ： 一件事情从开始到结束
+
+   事务四大特性： 原子性  一致性  隔离性  持久性
+
+   隔离性 ： 不同隔离级别
+
+   begin   commit   rollback
+
+练习1:
+编写一个程序，输入一个学生的姓名，将该学生
+成绩改为100分
+
+练习2：
+创建数据库 dict
+create database dict charset=utf8;
+
+在其中创建一个数据表 words
+id  word   mean
+
+create table words (id int primary key auto_increment,word char(30),mean varchar(256));
+
+编写一个程序将dict.txt文本的单词存入该数据表
+
+作业： 1. 单词存储练习没有完成的完成
+      2. 数据管理部分总结
+
+
+

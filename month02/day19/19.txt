@@ -1,0 +1,191 @@
+前情回顾
+
+1. 软件开发流程
+   需求文档  概要设计文档
+   详细设计文档  测试文档
+   说明文档
+
+   思维导图   流程图  甘特图
+
+2. 代码管理工具 —— git
+
+   基本命令   add/mv/rm  commit
+             status   log
+
+   工作区保存
+
+   版本管理
+
+   分支管理   冲突
+
+   远程仓库
+      连接远程： git clone ...
+               git remote add origin ...
+
+      上传 ： git  push -u origin master
+
+      拉取 ： git  pull
+
+
+在线词典分析
+1. 需求分析
+   确定客户端功能和使用流程
+
+2. 技术分析
+
+   * 使用什么并发技术 :  多进程
+
+   * 使用什么网络 ： tcp网络
+
+   * 两个界面如何相互跳转 （demo示例）
+
+   * 存储 --》 使用 dict 数据库
+     words 表   id  word  mean
+
+     user 表   id   name   passwd
+     create table user (
+     id int primary key auto_increment,
+     name varchar(30) not null unique,
+     passwd char(64) not null);
+
+
+     history 表  id   word   time  user_id
+      create table hist (
+      id int primary key auto_increment,
+      word varchar(30),
+      time datetime default now(),
+      user_id int,
+      foreign key (user_id) references user(id));
+
+     history 表  id   name    word    time
+     history 表  id   user_id  words_id   time
+
+
+3. 功能划分，封装的设计
+
+   M -- V -- C
+
+   登录
+   注册
+   查单词
+   历史记录
+
+
+4. 通信协议设计
+
+              请求类型    数据参量
+   登录          L       name  passwd
+   注册          R       name  passwd
+   查单词        Q        word
+   历史记录       H
+   退出          E
+
+
+5. 具体模块逻辑分析
+
+   框架搭建
+
+   登录
+   注册
+      客户端：  输入用户名密码
+               发送请求
+               等待反馈响应
+               OK  打印注册成功
+               FAIL 失败
+
+      服务端 ： 解析请求，调用方法处理
+               判断是否可以注册 返回响应
+               OK  将用户信息插入数据库
+               FAIL  结束
+
+
+   查单词
+   历史记录
+
+6. 优化完善
+
+
+
+
+Linux 总结
+1. Linux操作系统构成
+2. Linux操作系统特点和应用
+3. Linux文件系统结构 文件位置表达
+4. 常用的Linux命令
+5. 压缩解压  创建用户  远程访问
+   apt安装
+6. 使用vi做简单的修改编写工作
+7. Linux终端运行Python项目
+
+能够熟练使用Linux环境完成开发工作
+
+数据处理总结
+
+文件的处理
+  文件的读写：open() read() write()  重点
+  正则表达式: 元字符  匹配规则  re模块
+
+数据库的处理
+  mysql特点 数据库基础概念  知道
+  SQL基础的增删改查语句 高级查询 聚合  必会
+  表关系设计 表关联查询   重点难点
+  索引  事务  存储过程  掌握
+  视图  函数  优化  配置用户  备份   毕业前回看视频
+
+熟练使用mysql，redis等数据库进行开发工作
+
+精通数据库建设，能够熟练使用关系型和非关系型
+数据库搭建数据业务模型
+
+后端核心编程总结
+
+1. 网络通信
+   网络基础知识
+   udp套接字编程  （重点）
+   tcp套接字编程  （重点）
+
+   理论问题 ：
+     1. OSI七层模型和tcp/ip模型
+     2. 三次握手和四次挥手过程
+     3. tcp和udp区别
+
+
+2. 进程线程
+     进程的创建  （重点）
+     线程的创建  （同步互斥方法）
+
+     理论： 对比进程和线程
+
+3. IO模型
+     阻塞IO  非阻塞IO
+     IO多路复用方法
+        掌握 select 和 epoll使用
+
+     理论: HTTP协议解读 （请求响应格式）
+
+4. 网络并发模型
+
+     多任务并发模型  （重点）
+     IO并发模型 （重点）
+
+综合代码：
+  聊天室 ： udp套接字  进程
+          总分模式  网络协议设计（请求）
+
+  ftp文件服务： tcp  多任务并发
+           网络协议响应  请求应答流程
+
+  webserver： tcp  IO并发 http协议
+           接口编写  接口编写思路
+
+  在线词典： tcp  多进程并发  数据库
+
+
+
+python核心编程第三版
+
+
+
+
+
+
