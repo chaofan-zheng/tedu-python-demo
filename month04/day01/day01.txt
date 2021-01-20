@@ -1,0 +1,59 @@
+一.自我介绍
+   马志国
+二.几点要求
+   1.保持学习的激情
+     抱团学习，互相激励
+   2.工欲善其事必先利其器
+     保证自己的开发环境，大家下载并按照新的教学环境。
+   3.要有危机意识
+     
+三.课程组成部分(19~20天)
+   1. Django框架（8.5天）
+   2. redis数据库（3天）
+   3. Ajax 前后端分离的项目中，做异步提交使用(1.5天)
+   4. 多人博客项目(6~7天)
+      4.1 短信验证功能
+      4.2 Celery框架解决耗时操作的问题
+          生产者消费者模式
+      4.3 缓存技术（redis数据库）
+      4.4 前后端分离
+      后期有个项目宣讲：自由分组完成自己的项目。
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+Django day01
+1.Django框架的介绍
+  1.1 Django官网
+      https://www.djangoproject.com/ 
+  1.2 版本的选择 LTS
+      我们选择的是2.2 LTS，最新的是3.X版本
+  1.3 Django框架的组成(cMTV)
+  1.4 采用离线安装
+      1.4.1 解压缩相关安装包，进入对应的目录中，看到
+            setup.py文件。
+      1.4.2 先卸载旧的Django包
+            sudo pip3 uninstall django
+      1.4.3 再安装新的Django包
+            sudo python3 setup.py install
+      1.4.4 安装完成后，打印一下Django的版本
+2.创建第一个Django项目
+  2.1 创建项目的命令
+      django-admin startproject mysite1
+  2.2 启动服务
+      cd  mysite1
+      python3 manage.py runserver
+3.url以及Django如何处理url
+4.http请求和响应  
+    
+  
+
+
+
+
+
+
+
+      
+
+
+         
+            

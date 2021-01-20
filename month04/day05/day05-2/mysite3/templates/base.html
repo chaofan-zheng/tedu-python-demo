@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+        {% block title %}
+            mysite3首页
+        {% endblock %}
+    </title>
+</head>
+<body>
+<div id="nav">
+    <a href="/">首页</a>
+    <a href="/sports">体育</a>
+    <a href="/news">新闻</a>
+    <a href="{% url 'news_url' %}">新闻【反向解析】</a>
+    <a href="{% url 'pgn_url' '200' %}">pagen</a>
+</div>
+<div id="content">
+  {% block content %}
+    <h2>石家庄加油！北京加油！中国加油!世界加油！</h2>
+  {% endblock %}
+</div>
+<div id="foot">
+    京备字:010-465487987 联系方式:400-010-888
+</div>
+</body>
+</html>

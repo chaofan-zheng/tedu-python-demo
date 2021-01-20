@@ -1,0 +1,30 @@
+1.Django处理GET和POST请求
+  1.1 GET请求传递给服务器数据时，多采用查询字符串方式传递
+       path?name=张三&a=100&b=200&a=300
+      request.GET['名称']
+      request.GET.get（'名称'，默认值）
+      request.GET.getlist('名称') 
+      GET请求的三种方式：
+      a.地址栏输入url回车；
+      b.A标签
+      c.form提交时，method选择get【不常用】
+    
+  1.2 POST请求传递给服务器数据时，数据在请求体中
+      request.POST['名称']
+      request.POST.get（'名称'，默认值）
+      request.POST.getlist('名称') 
+      POST常见的方式，form提交，method选择post【常用】
+   无论是GET还是POST都是类字典类型
+   
+2.使用path转换器和查询字符串都能够将地址栏输入的数据
+   传递给后端的视图函数。
+   浏览编号为99的这本书  
+   books/99           -path转换器   books/<int:bid>
+   books?bid=99   -查询字符串   request.GET.get('bid') 
+
+3.计算器案例
+  3.1 在templates目录下添加模板页面
+      <form action='/mycalc' method='POST'> 
+  3.2 在主路由文件url.py中：
+      path('/mycalc',views.test_calc) 
+  
