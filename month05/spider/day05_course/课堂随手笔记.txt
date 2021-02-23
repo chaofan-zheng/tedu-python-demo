@@ -1,0 +1,194 @@
+王伟超
+wangweichao@tedu.cn
+班级-中心-姓名
+
+1、第四阶段课程介绍(13个工作日)
+   1.1> 爬虫(7-8天左右)
+        爬虫工程师
+        作为Python开发工程师、数据分析工程师的附加技能
+   1.2> Hadoop大数据(2-3左右)
+   1.3> 数据结构(3天左右)
+2、课程特点
+   2.1> 综合
+        第一阶段、MySQL、Redis、MongoDB、正则表达式re、多线程、多进程爬虫、HTML、JavaScript... 爬虫本身知识点
+   2.2> 抽象(Hadoop、数据结构)
+3、警惕
+   3.1> 政府、公安机关的网站不能抓!!!
+   3.2> 涉及到个人隐私数据(比如个人简历)
+   遵纪守法,热爱生活
+
+******************************************
+1、爬虫分类及robots协议
+   1.1> 通用网络爬虫-搜索引擎公司
+        robots协议：网站会通过robots协议来告诉搜索引擎哪些页面可以抓,哪些页面不能抓,通用网络爬虫必须得遵守robots协议
+   1.2> 聚焦网络爬虫
+        自己写的爬虫程序,面向主题的爬虫,面向需求的爬虫
+2、请求模块requests
+   html = requests.get(url=url,headers={}).text
+   html = requests.get(url=url,headers={}).content.decode('utf-8', 'ignore')
+   响应对象resp属性
+       .text    : 字符串
+       .content : 字节串
+       .status_code : HTTP响应码
+       .url     : 返回实际数据的URL地址
+3、写爬虫程序流程
+   3.1> 静态数据
+        3.1.1> 确认数据来源,右键查看网页源代码,搜索关键字
+	3.1.2> 响应内容中存在!!!观察URL地址规律
+	3.1.3> 写正则表达式 或者 xpath表达式,完善程序
+   3.2> 动态数据
+        3.2.1> 确认数据来源,右键查看网页源代码,搜索关键字
+	3.2.2> 响应内容中不存在!!!
+	3.2.3> F12抓包,寻找并分析返回实际数据的网络数据包
+	3.2.4> GET请求：观察查询参数规律(QueryString Paramters)
+               POST请求：观察Form表单数据规律
+4、正则解析模块使用
+   4.1> 用法：r_list = re.findall(regex, html, re.S)
+   4.2> 结果
+        r_list : 空列表(正则错误或者响应内容不对)
+        r_list : ['','',...] (正则中1个分组)
+	r_list : [(),(),...] (正则中多个分组)
+5、数据持久化-MySQL
+   5.1> __init__()创建数据库连接对象和游标对象
+       self.db = pymysql.connect(.......)
+       self.cur = self.db.cursor()
+   5.2> save_html()将数据处理成列表(元组)存入数据库表中
+       self.cur.execute(ins, [])
+       self.db.commit()
+   5.3> crawl()等所有页的数据抓取完成后断开数据库
+       self.cur.close()
+       self.db.close()
+6、数据持久化-csv
+   5.1> __init__()中打开文件并初始化csv文件写入对象
+        self.f = open('文件名', 'w')
+	self.writer = csv.writer(self.f)
+   5.2> save_html()将数据处理成列表(元组)存入csv文件中
+        self.writer.writerow([])
+   5.3> crawl()等所有页的数据抓取完成后关闭文件
+        self.f.close()
+7、数据持久化-MongoDB
+   7.1> __init__()中创建连接对象、库对象和集合对象
+        self.conn = pymongo.MongoClient('localhost', 27017)
+	self.db = self.conn['库名']
+	self.myset = self.db['集合名']
+   7.2> save_html()将数据处理成字典,然后存入mongodb数据库中
+        self.myset.insert_one({})
+   7.3> 常用命令
+        >show dbs
+	>use 库名
+	>show collections
+	>db.集合名.count()
+	>db.集合名.find().pretty()
+	>db.dropDatabase()
+        MongoDB是一个基于磁盘存储的非关系数据库,文档型的数据库(库 - 集合 - JSON文档)
+8、增量爬虫
+   8.1> 原理 ：记录爬取过的指纹,每次抓之前先比对指纹
+   8.2> 实现 ：利用Redis中集合来实现,存储每个请求的指纹
+   8.3> 为什么使用redis
+        原因1：Redis数据库基于内存,查询比对速度特别快
+	原因2：Redis中自带集合数据类型,具有无序去重的特点,非常适合存储所有请求的指纹
+9、目前遇到的反爬
+   9.1> 反爬：针对请求头反爬(检查请求头合法性,User-Agent、Cookie、Referer)
+        解决：利用headers参数,发送请求时包装请求头(User-Agent、Cookie、Referer)
+   9.2> 反爬：针对User-Agent访问频率反爬
+        解决：建立自己的User-Agent池,每次访问随机切换User-Agent;利用fake_useragent模块,随机切换User-Agent
+   9.3> 反爬：针对IP地址访问频率反爬
+        解决：建立自己的代理IP池,每次访问随机切换代理IP;代理IP池有免费的,也有收费的
+   9.4> 反爬：响应内容和前端页面的节点结构不一致(百度贴吧小视频案例)
+        解决：打印查看响应内容,以响应内容为准调整正则表达式或者xpath表达式
+   9.5> 反爬：JS加密反爬(有道翻译)
+        解决：F12抓包具体分析,找到加密的JS代码,破解并用Python按照相同的加密算法进行加密
+   9.6> 反爬：JS逆向反爬(百度翻译)
+        解决：F12抓包具体分析,找到加密的JS代码,用pyexecjs模块进行逆向处理(分析并调整JS代码)
+   9.7> 反爬：Ajax动态加载(豆瓣电影)
+        解决：F12抓包,分析具体返回实际数据的网络数据包
+10、请求模块总结
+   10.1> requests - 第三方模块
+         requests.get()
+	 requests.post()
+	 resp = requests.get(url='',proxies={},headers={},timeout=3)
+   
+   10.2> urllib.request - 标准库模块
+	 req = urllib.request.Request(url='', headers={})
+	 resp= urllib.request.urlopen(req)
+	 html = resp.read().decode('utf-8')
+11、解析模块总结
+   11.1> re
+         r_list = re.findall(regex, html, re.S)
+   11.2> lxml + xpath
+         from lxml import etree
+	 eobj = etree.HTML(html)
+	 div_list = eobj.xpath('//div')
+	 for div in div_list:
+	     item = {}
+	     item['name'] = div.xpath('.//p/text()')[0]
+	     item['url'] = div.xpath('.//p/a/@src')[0]
+   11.3> xpath总结
+         结果1：[]
+	        xpath表达式有问题,或者响应内容不对
+	 结果2：[<element div at xxx>,<element div at xxx>,...]
+	        xpath表达式的末尾一定没有 /text() 或 /@属性名
+	 结果3：['字符串1', '字符串2', '字符串3', ... ...]
+	        xpath表达式的末尾一定有：/text() 或 /@属性名
+12、JS加密及逆向流程梳理
+   12.1> 打开浏览器,F12打开控制台,准备抓包
+   12.2> 输入官网地址,页面执行某些行为,让数据动态加载并在控制台捕获这些网络数据包
+   12.3> 寻找并分析返回实际数据的网络数据包
+         F12->NetWork->XHR->单击网络数据包->Preview
+	 Headers->General、Request Headers、QueryString Paramters、FormData
+   12.4> 观察网络数据包的规律
+         GET请求：观察Query String Paramters规律
+	 POST请求：观察FormData规律
+   12.5> 如果有JS加密,需要进一步抓包寻找加密的JS文件进行破解
+
+
+
+
+
+
+
+
+
+
+selenium + chromedriver + Chrome
+1、selenium ：sudo pip3 install selenium 
+2、Chrome ：下载安装包双击安装即可
+3、chromedriver ：
+   3.1> 下载解压,找到解压后的文件：chromedriver
+   3.2> 添加环境变量
+        sudo cp chromedriver /usr/bin/
+	sudo chmod 777 /usr/bin/chromdriver
+
+
+UserWarning: 
+    Selenium support for PhantomJS has been deprecated, 
+    please use headless versions of Chrome or Firefox instead
+
+
+Chrome和Firefox：既有有头模式,又有无头模式,导致了PhantomJS巨星陨落
+
+字符串.find()
+
+返回值1：当存在,则返回下标索引
+返回值-1：当查找的内容不存在,则返回-1
+
+
+
+最后一页 ：pn-next disabled
+非最后1页：pn-next
+
+while True:
+    # -1: 说明没有找到,说明不是最后一页
+    if driver.page_source.find('pn-next disabled') == -1:
+         找到 下一页 节点,并点击
+    else:
+         终止程序
+
+
+
+selenium操作鼠标：from selenium.webdriver import ActionChains
+
+1、实例化(driver)
+2、指定行为: move_to_element()  click_and_hold() release()
+3、执行
+

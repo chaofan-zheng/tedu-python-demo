@@ -1,0 +1,131 @@
+王伟超
+wangweichao@tedu.cn
+班级-中心-姓名
+
+1、第四阶段课程介绍(13个工作日)
+   1.1> 爬虫(7-8天左右)
+        爬虫工程师
+        作为Python开发工程师、数据分析工程师的附加技能
+   1.2> Hadoop大数据(2-3左右)
+   1.3> 数据结构(3天左右)
+2、课程特点
+   2.1> 综合
+        第一阶段、MySQL、Redis、MongoDB、正则表达式re、多线程、多进程爬虫、HTML、JavaScript... 爬虫本身知识点
+   2.2> 抽象(Hadoop、数据结构)
+3、警惕
+   3.1> 政府、公安机关的网站不能抓!!!
+   3.2> 涉及到个人隐私数据(比如个人简历)
+   遵纪守法,热爱生活
+
+******************************************
+1、爬虫分类及robots协议
+   1.1> 通用网络爬虫-搜索引擎公司
+        robots协议：网站会通过robots协议来告诉搜索引擎哪些页面可以抓,哪些页面不能抓,通用网络爬虫必须得遵守robots协议
+   1.2> 聚焦网络爬虫
+        自己写的爬虫程序,面向主题的爬虫,面向需求的爬虫
+2、请求模块requests
+   html = requests.get(url=url,headers={}).text
+   html = requests.get(url=url,headers={}).content.decode('utf-8', 'ignore')
+   响应对象resp属性
+       .text    : 字符串
+       .content : 字节串
+       .status_code : HTTP响应码
+       .url     : 返回实际数据的URL地址
+3、写爬虫程序流程
+   3.1> 确认数据来源：右键查看网页源代码,搜索抓取的关键字
+   3.2> 响应内容中存在：分析观察URL地址的规律
+   3.3> 观察页面结构,完成正则表达式
+        3.3.1> 写法一：看着页面结构手写
+	3.3.2> 写法二：右键-copy-copy Element-改！
+4、正则解析模块使用
+   4.1> 用法：r_list = re.findall(regex, html, re.S)
+   4.2> 结果
+        r_list : 空列表(正则错误或者响应内容不对)
+        r_list : ['','',...] (正则中1个分组)
+	r_list : [(),(),...] (正则中多个分组)
+5、数据持久化-MySQL
+   5.1> __init__()创建数据库连接对象和游标对象
+       self.db = pymysql.connect(.......)
+       self.cur = self.db.cursor()
+   5.2> save_html()将数据处理成列表(元组)存入数据库表中
+       self.cur.execute(ins, [])
+       self.db.commit()
+   5.3> crawl()等所有页的数据抓取完成后断开数据库
+       self.cur.close()
+       self.db.close()
+6、数据持久化-csv
+   5.1> __init__()中打开文件并初始化csv文件写入对象
+        self.f = open('文件名', 'w')
+	self.writer = csv.writer(self.f)
+   5.2> save_html()将数据处理成列表(元组)存入csv文件中
+        self.writer.writerow([])
+   5.3> crawl()等所有页的数据抓取完成后关闭文件
+        self.f.close()
+7、数据持久化-MongoDB
+   7.1> __init__()中创建连接对象、库对象和集合对象
+        self.conn = pymongo.MongoClient('localhost', 27017)
+	self.db = self.conn['库名']
+	self.myset = self.db['集合名']
+   7.2> save_html()将数据处理成字典,然后存入mongodb数据库中
+        self.myset.insert_one({})
+   7.3> 常用命令
+        >show dbs
+	>use 库名
+	>show collections
+	>db.集合名.count()
+	>db.集合名.find().pretty()
+	>db.dropDatabase()
+        MongoDB是一个基于磁盘存储的非关系数据库,文档型的数据库(库 - 集合 - JSON文档)
+8、增量爬虫
+   8.1> 原理 ：记录爬取过的指纹,每次抓之前先比对指纹
+   8.2> 实现 ：利用Redis中集合来实现,存储每个请求的指纹
+   8.3> 为什么使用redis
+        原因1：Redis数据库基于内存,查询比对速度特别快
+	原因2：Redis中自带集合数据类型,具有无序去重的特点,非常适合存储所有请求的指纹
+9、目前遇到的反爬
+   9.1> 反爬：针对请求头反爬(检查请求头合法性,User-Agent、Cookie、Referer)
+        解决：利用headers参数,发送请求时包装请求头(User-Agent、Cookie、Referer)
+   9.2> 反爬：针对User-Agent访问频率反爬
+        解决：建立自己的User-Agent池,每次访问随机切换User-Agent;利用fake_useragent模块,随机切换User-Agent
+   9.3> 反爬：针对IP地址访问频率反爬
+        解决：建立自己的代理IP池,每次访问随机切换代理IP;代理IP池有免费的,也有收费的
+   9.4> 反爬：响应内容和前端页面的节点结构不一致
+        解决：打印查看响应内容,以响应内容为准调整正则表达式或者xpath表达式
+10、请求模块总结
+   10.1> requests - 第三方模块
+         requests.get()
+	 requests.post()
+	 resp = requests.get(url='',proxies={},headers={},timeout=3)
+   
+   10.2> urllib.request - 标准库模块
+	 req = urllib.request.Request(url='', headers={})
+	 resp= urllib.request.urlopen(req)
+	 html = resp.read().decode('utf-8')
+11、解析模块总结
+   11.1> re
+         r_list = re.findall(regex, html, re.S)
+   11.2> lxml + xpath
+         from lxml import etree
+	 eobj = etree.HTML(html)
+	 div_list = eobj.xpath('//div')
+	 for div in div_list:
+	     item = {}
+	     item['name'] = div.xpath('.//p/text()')[0]
+	     item['url'] = div.xpath('.//p/a/@src')[0]
+   11.3> xpath总结
+         结果1：[]
+	        xpath表达式有问题,或者响应内容不对
+	 结果2：[<element div at xxx>,<element div at xxx>,...]
+	        xpath表达式的末尾一定没有 /text() 或 /@属性名
+	 结果3：['字符串1', '字符串2', '字符串3', ... ...]
+	        xpath表达式的末尾一定有：/text() 或 /@属性名
+
+
+
+数据抓取梳理：
+1、确认数据来源 - 右键查看网页源代码,搜索关键字
+2、响应内容中存在： 观察URL地址规律,写正则或xpath表达式
+
+
+2、响应内容中不存在：F12抓包,寻找并分析返回实际数据(要抓取数据)的网络数据包
+

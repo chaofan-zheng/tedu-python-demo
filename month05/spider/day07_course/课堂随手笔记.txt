@@ -1,0 +1,384 @@
+王伟超
+wangweichao@tedu.cn
+班级-中心-姓名
+
+1、第四阶段课程介绍(13个工作日)
+   1.1> 爬虫(7-8天左右)
+        爬虫工程师
+        作为Python开发工程师、数据分析工程师的附加技能
+   1.2> Hadoop大数据(2-3左右)
+   1.3> 数据结构(3天左右)
+2、课程特点
+   2.1> 综合
+        第一阶段、MySQL、Redis、MongoDB、正则表达式re、多线程、多进程爬虫、HTML、JavaScript... 爬虫本身知识点
+   2.2> 抽象(Hadoop、数据结构)
+3、警惕
+   3.1> 政府、公安机关的网站不能抓!!!
+   3.2> 涉及到个人隐私数据(比如个人简历)
+   遵纪守法,热爱生活
+
+******************************************
+1、爬虫分类及robots协议
+   1.1> 通用网络爬虫-搜索引擎公司
+        robots协议：网站会通过robots协议来告诉搜索引擎哪些页面可以抓,哪些页面不能抓,通用网络爬虫必须得遵守robots协议
+   1.2> 聚焦网络爬虫
+        自己写的爬虫程序,面向主题的爬虫,面向需求的爬虫
+2、请求模块requests
+   html = requests.get(url=url,headers={}).text
+   html = requests.get(url=url,headers={}).content.decode('utf-8', 'ignore')
+   响应对象resp属性
+       .text    : 字符串
+       .content : 字节串
+       .status_code : HTTP响应码
+       .url     : 返回实际数据的URL地址
+3、写爬虫程序流程
+   3.1> 静态数据
+        3.1.1> 确认数据来源,右键查看网页源代码,搜索关键字
+	3.1.2> 响应内容中存在!!!观察URL地址规律
+	3.1.3> 写正则表达式 或者 xpath表达式,完善程序
+   3.2> 动态数据
+        3.2.1> 确认数据来源,右键查看网页源代码,搜索关键字
+	3.2.2> 响应内容中不存在!!!
+	3.2.3> F12抓包,寻找并分析返回实际数据的网络数据包
+	3.2.4> GET请求：观察查询参数规律(QueryString Paramters)
+               POST请求：观察Form表单数据规律
+4、正则解析模块使用
+   4.1> 用法：r_list = re.findall(regex, html, re.S)
+   4.2> 结果
+        r_list : 空列表(正则错误或者响应内容不对)
+        r_list : ['','',...] (正则中1个分组)
+	r_list : [(),(),...] (正则中多个分组)
+5、数据持久化-MySQL
+   5.1> __init__()创建数据库连接对象和游标对象
+       self.db = pymysql.connect(.......)
+       self.cur = self.db.cursor()
+   5.2> save_html()将数据处理成列表(元组)存入数据库表中
+       self.cur.execute(ins, [])
+       self.db.commit()
+   5.3> crawl()等所有页的数据抓取完成后断开数据库
+       self.cur.close()
+       self.db.close()
+6、数据持久化-csv
+   5.1> __init__()中打开文件并初始化csv文件写入对象
+        self.f = open('文件名', 'w')
+	self.writer = csv.writer(self.f)
+   5.2> save_html()将数据处理成列表(元组)存入csv文件中
+        self.writer.writerow([])
+   5.3> crawl()等所有页的数据抓取完成后关闭文件
+        self.f.close()
+7、数据持久化-MongoDB
+   7.1> __init__()中创建连接对象、库对象和集合对象
+        self.conn = pymongo.MongoClient('localhost', 27017)
+	self.db = self.conn['库名']
+	self.myset = self.db['集合名']
+   7.2> save_html()将数据处理成字典,然后存入mongodb数据库中
+        self.myset.insert_one({})
+   7.3> 常用命令
+        >show dbs
+	>use 库名
+	>show collections
+	>db.集合名.count()
+	>db.集合名.find().pretty()
+	>db.dropDatabase()
+        MongoDB是一个基于磁盘存储的非关系数据库,文档型的数据库(库 - 集合 - JSON文档)
+8、增量爬虫
+   8.1> 原理 ：记录爬取过的指纹,每次抓之前先比对指纹
+   8.2> 实现 ：利用Redis中集合来实现,存储每个请求的指纹
+   8.3> 为什么使用redis
+        原因1：Redis数据库基于内存,查询比对速度特别快
+	原因2：Redis中自带集合数据类型,具有无序去重的特点,非常适合存储所有请求的指纹
+9、目前遇到的反爬
+   9.1> 反爬：针对请求头反爬(检查请求头合法性,User-Agent、Cookie、Referer)
+        解决：利用headers参数,发送请求时包装请求头(User-Agent、Cookie、Referer)
+   9.2> 反爬：针对User-Agent访问频率反爬
+        解决：建立自己的User-Agent池,每次访问随机切换User-Agent;利用fake_useragent模块,随机切换User-Agent
+   9.3> 反爬：针对IP地址访问频率反爬
+        解决：建立自己的代理IP池,每次访问随机切换代理IP;代理IP池有免费的,也有收费的
+   9.4> 反爬：响应内容和前端页面的节点结构不一致(百度贴吧小视频案例)
+        解决：打印查看响应内容,以响应内容为准调整正则表达式或者xpath表达式
+   9.5> 反爬：JS加密反爬(有道翻译)
+        解决：F12抓包具体分析,找到加密的JS代码,破解并用Python按照相同的加密算法进行加密
+   9.6> 反爬：JS逆向反爬(百度翻译)
+        解决：F12抓包具体分析,找到加密的JS代码,用pyexecjs模块进行逆向处理(分析并调整JS代码)
+   9.7> 反爬：Ajax动态加载(豆瓣电影)
+        解决：F12抓包,分析具体返回实际数据的网络数据包
+10、请求模块总结
+   10.1> requests - 第三方模块
+         requests.get()
+	 requests.post()
+	 resp = requests.get(url='',proxies={},headers={},timeout=3)
+   
+   10.2> urllib.request - 标准库模块
+	 req = urllib.request.Request(url='', headers={})
+	 resp= urllib.request.urlopen(req)
+	 html = resp.read().decode('utf-8')
+11、解析模块总结
+   11.1> re
+         r_list = re.findall(regex, html, re.S)
+   11.2> lxml + xpath
+         from lxml import etree
+	 eobj = etree.HTML(html)
+	 div_list = eobj.xpath('//div')
+	 for div in div_list:
+	     item = {}
+	     item['name'] = div.xpath('.//p/text()')[0]
+	     item['url'] = div.xpath('.//p/a/@src')[0]
+   11.3> xpath总结
+         结果1：[]
+	        xpath表达式有问题,或者响应内容不对
+	 结果2：[<element div at xxx>,<element div at xxx>,...]
+	        xpath表达式的末尾一定没有 /text() 或 /@属性名
+	 结果3：['字符串1', '字符串2', '字符串3', ... ...]
+	        xpath表达式的末尾一定有：/text() 或 /@属性名
+12、JS加密及逆向流程梳理
+   12.1> 打开浏览器,F12打开控制台,准备抓包
+   12.2> 输入官网地址,页面执行某些行为,让数据动态加载并在控制台捕获这些网络数据包
+   12.3> 寻找并分析返回实际数据的网络数据包
+         F12->NetWork->XHR->单击网络数据包->Preview
+	 Headers->General、Request Headers、QueryString Paramters、FormData
+   12.4> 观察网络数据包的规律
+         GET请求：观察Query String Paramters规律
+	 POST请求：观察FormData规律
+   12.5> 如果有JS加密,需要进一步抓包寻找加密的JS文件进行破解
+13、节前回顾
+   13.1> 请求模块 - requests
+         resp = requests.get(url=url, headers={})
+	 resp = requests.post(url=url, data={}, headers={})
+         resp.text : 响应内容(字符串)
+	 resp.content : 响应内容(字节串)
+	 resp.status_code : HTTP响应码
+	 resp.url : 返回实际数据的URL地址
+	 url = ''
+	 proxies = {'http':'http://1.1.1.1:8888'}
+	 data = {}
+	 headers = {}
+	 timeout = 3
+   13.2> 解析模块
+         13.2.1> re
+	         import re
+		 r_list = re.findall(regex, html, re.S)
+	 13.2.2> lxml + xpath
+		 from lxml import etree
+		 eobj = etree.HTML(html)
+		 div_list = eobj.xpath('基准xpath表达式')
+		 for div in div_list:
+		     item = {}
+		     item['name'] = div.xpath('.//xxxx')
+   	 13.2.3> selenium + xpath
+	         div_list = driver.find_elements_by_xpath('')
+		 for div in div_list:
+		     item = {}
+		     item['name'] = div.find_element_by_xpath('').text
+   13.3> selenium总结
+         13.3.1> 使用流程
+	         from selenium import webdriver
+		 driver = webdriver.Chrome()
+		 driver = webdriver.Firefox()
+		 driver = webdriver.PhantomJS()
+		 driver.get(url='')
+	 13.3.2> 定位节点(elements 和 element)
+	         r_list = driver.find_elements_by_id("")
+		 node = driver.find_element_by_id("")
+		 # 异常：NoSuchElementException：... ...
+		 r_list = driver.find_elements_by_name("")
+		 r_list = driver.find_elements_by_class_name("")
+		 r_list = driver.find_elements_by_xpath("")
+		 node = driver.find_element_by_link_text("")
+		 node = driver.find_element_by_partical_link_text("")
+	 13.3.3> 高级操作
+	         鼠标操作
+		    from selenium.webdriver import ActionChains
+		    ActionChains(driver).move_to_element(node).perform()
+		 切换句柄
+		    all_handles = driver.window_handles
+		    driver.switch_to.window(all_handles[1])
+		 设置无界面
+		    options = webdriver.ChromeOptions()
+		    options.add_argument('--headless')
+		    driver = webdriver.Chrome(options=options)
+   13.4> 遇到过的反爬
+         反爬1：请求头反爬(网站检查头中的Cookie、Referer、User-Agent)
+	 反爬2：User-Agent频率检查(建立User-Agent池)
+	 反爬3：IP地址频率检查(建立代理IP池)
+	 反爬4：Ajax动态加载(抓包工具抓取对应的网络数据包进行分析)
+	 反爬5：JS加密反爬(抓包工具抓取对应网络数据包分析破解)
+	 反爬6：JS逆向反爬(利用pyexecjs模块进行逆向处理)
+14、多线程爬虫原理
+   CPU密集程序,适合使用多进程
+   IO操作多场景,适合使用多线程,爬虫IO场景很多
+      爬虫IO场景之一：网络IO(发请求之后阻塞等待响应)
+      爬虫IO场景之二：本地磁盘IO(抓取的数据存入本地文件)
+   多线程在爬虫的世界中,能极大提升数据抓取的效率
+15、多线程爬虫代码实现
+16、selenium总结
+   16.1> 优点
+         简单,无须过多抓包分析具体网络数据包,使用的是真实的浏览器
+   16.2> 缺点
+         效率低,很少用于大型爬虫项目
+	 效率低：selenium本身提取数据的速度比较慢
+	         需要休眠等待页面元素加载
+   16.3> selenium中xpath的特点
+         xpath找的都是节点对象,而不是具体文本字符串,xpath表达式的末尾不能有 /text() 或者 /@属性名
+	 获取节点文本: .text 属性
+	 获取节点属性值: .get_attribute('属性名')
+17、scrapy框架五大组件和工作流程
+   17.1> 引擎(Engine) : 总指挥,整个框架核心
+   17.2> 爬虫文件(SPIDER) : 负责数据解析提取
+   17.3> 调度器(SCHEDULER): 负责维护请求队列
+   17.4> 下载器(DOWNLOADER): 负责发请求获取响应
+   17.5> 项目管道(PIPELINE): 负责数据处理
+   工作流程：
+      爬虫项目启动时,引擎找到爬虫文件所要第一个或第一批要抓取的URL地址,交给调度器入队列,调度器生成请求指纹比对处理后,出队列交给下载器去下载,下载器下载完成后拿到响应对象交给爬虫文件,进行数据解析提取,提取出来的数据交给项目管道文件处理,需要继续跟进的URL地址,再次交给调度器入队列,如此循环
+
+   回忆MySQL：
+   InnoDB : 支持事务、事务回滚、支持行级锁、支持外键,用于写操作多的表
+   MyISAM : 支持表级锁,用于读操作多的表
+   MEMORY : 表记录存储在内存中,主机重启或服务重启,表记录丢失,用于临时表
+18、scrapy爬虫项目流程
+   18.1> 创建爬虫项目和爬虫文件
+         scrapy startproject Tencent
+	 cd Tencent
+	 scrapy genspider tencent tencent.com
+   18.2> items.py定义抓取的数据结构
+         import scrapy
+	 class TencentItem(scrapy.Item):
+	     name = scrapy.Field()
+   18.3> spider.py提取数据,并将数据交给管道文件处理
+         import scrapy
+	 from ..items import TencentItem
+
+	 class TencentSpider(scrapy.Spider):
+	     name = 'tencent'
+	     allowed_domains = ['tencent.com']
+	     
+	     def start_requests(self):
+	         """生成所有要抓取的URL地址,一次性交给调度器入队列"""
+		 for i in range(100):
+		     page_url = xxx
+		     # 请求交给调度器
+		     yield scrapy.Request(url=page_url,
+		                          callback=self.detail)
+	     
+	     def detail(self, response):
+	         div_list = response.xpath('')
+		 for div in div_list:
+		     item = TencentItem()
+		     item['name'] = div.xpath('').get()
+		     # 数据交给管道
+		     yield item
+   18.4> pipelines.py处理数据
+         class TencentPipeline(object):
+	     def process_item(self, item, spider):
+	         return item
+   18.5> settings.py中全局配置
+         ROBOTSTXT_OBEY = False
+	 CONCURRENT_REQUEST = 8
+	 DOWNLOAD_DELAY = 1
+	 COOKIES_ENABLED = False
+	 DEFALUT_REQUEST_HEADERS = {'Cookie':'','User-Agent':''}
+	 ITEM_PIPELINES = {'Tencent.pipelines.TencentPipeline':300}
+   18.6> run.py运行爬虫
+         from scrapy import cmdline
+	 cmdline.execute('scrapy crawl tencent'.split())
+19、scrapy数据持久化
+   19.1> csv文件
+         scrapy crawl 爬虫名 -o xxx.csv
+   19.2> json文件
+         scrapy crawl 爬虫名 -o xxx.json
+	 FEED_EXPORT_ENCODING = 'utf-8'
+   19.3> mysql数据库
+         提前建库见表
+	 pipelines.py中新建管道类
+	 settings.py中添加管道(ITEM_PIPELINES)
+   19.4> mongodb数据库
+         pipelines.py中新建管道类
+	 settings.py中添加管道(ITEM_PIPELINES)
+   19.5> redis数据库
+         利用scrapy_redis模块
+20、scrapy知识点梳理
+   20.1> 爬虫项目启动的两种方式
+         方式一：基于start_urls变量
+	 方式二：重写start_requests()方法
+   20.2> 数据提交的两种方式
+         数据交给管道：yield item
+	 请求交给调度器：yield scrapy.Request()
+   20.3> settings.py常用变量
+         指定UA：USER_AGENT = ''
+	 ROBOTS协议：ROBOTSTXT_OBEY = False
+	 指定请求头：DEFAULT_REQUEST_HEADERS = {}
+	 开启COOKIE：COOKIES_ENABLED = False
+	 开启管道：ITEM_PIPELINES = {}
+	 指定导出编码：FEED_EXPORT_ENCODING = '编码'
+	 最大并发量：CONCURRENT_REQUESTS = 数字
+	 下载延迟时间：DOWNLOAD_DELAY = 数字
+   20.4> scrapy.Request()参数
+         url = '' 
+	 meta = {}  不同解析函数间传递数据
+	 callback = 解析函数名  指定对应的解析函数
+	 headers = {}
+	 cookies = {}
+	 dont_filter = True  是否参与去重,默认False去重
+   20.5> 请求对象request的属性
+	 request.url
+	 request.headers
+	 request.callback
+	 request.meta
+	 request.cookies
+   20.6> 响应对象response属性及方法
+         response.xpath('')
+	 response.text
+	 response.body
+	 response.url
+	 response.code
+21、scrapy中Cookie使用
+   21.1> 用法1
+         settings.py开启cookie：COOKIES_ENABLED = False
+	 settings.py添加cookie：DEAULT_REQUEST_HEADERS = {'Cookie':''}
+   21.2> 用法2
+         settings.py开启cookie：COOKIES_ENABLED = True
+	 spider.py  添加cookie：
+	    yield scrapy.Request(url=,...,cookies={})
+22、分布式爬虫
+   22.1> 分布式原理及实现
+     原理：多台主机共享一个爬取队列
+     实现：利用scrapy_redis模块(本质:重写scrapy调度器)
+     为什么使用redis作为共享爬取队列？
+        redis基于内存速度快,redis中有集合数据类型可自动去重
+   22.2> 具体实现步骤
+     第1步：首先完成普通的scrapy爬虫项目
+     第2步：再进行设置,成分布式爬虫
+       settings.py
+       2.1> 重新指定调度器(SCHEDULER)
+       2.2> 重新指定去重机制(DUPEFILTER_CLASS)
+       2.3> 设置爬取完成后不清除请求指纹(SCHEDULER_PERSIST)
+       2.4> 指定URL地址管理的Redis的IP和PORT(REDIS_HOST REDIS_PORT)
+       2.5> 添加Redis管道(ITEM_PIPELINES)
+       第3步：把爬虫代码拷贝到分布式的所有爬虫服务器上,开始运行爬虫
+        结果：所有爬虫服务器都在抓取同一个scrapy爬虫项目,并且抓取的数据不重复
+   
+     tencent:dupefilter(集合,指纹)
+     tencent:items(列表,具体数据)
+     tencent:requests(请求信息,抓取完成后自动清除)
+
+
+
+
+OCR: 大概念,光学字符识别,能够把图像上的文字转为电子文本
+Tesseract-ocr: OCR的其中一个底层识别库,由Google维护开源
+pytesseract: python模块
+
+
+
+面试官：小张,遇到图形验证码是怎么处理的？
+你回答：使用tesseract-ocr,来识别验证码
+面试官：你tesseract的识别成功率大概多少？
+你回答：大概在90%左右
+面试官：哦,你机器训练的模型是你训练的吗？
+你回答：你略懂(是的)
+        你不懂(我们公司有专门的AI部门,模型是AI工程师提供给我们的)
+
+
+
+移动端的反爬 一般情况下 弱于PC端
+
+
