@@ -1,0 +1,2 @@
+yaya	beijing,shanghai,tianjin,hangzhou
+lucy	shanghai,chengdu,wuhan,shenzhen

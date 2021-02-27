@@ -1,0 +1,219 @@
+1、爬虫 
+   1.1> 爬虫工程师
+   1.2> 其他岗位的附加技能(数据分析、后端开发)
+2、Hadoop
+   2.1> 数据分析岗位的技能
+   Python数据分析工程师：
+        掌握：Python、numpy、pandas、matplotlib ...
+        了解：Hadoop、Hive ...
+   大数据分析工程师：
+        Java、Hadoop、Hive、HBase、Spark、Storm ...
+3、数据结构
+
+*******************************************************
+1、环境安装
+  安装java：
+  1.1> 下载解压重命名
+     sudo tar -xf jdk.tar.gz -C /usr/local/
+     cd /usr/local/
+     sudo mv jdk1.8.0 jdk8
+  1.2> 添加环境变量
+     sudo vi ~/.bashrc
+     source ~/.bashrc
+
+  安装hadoop：
+    1、下载解压重命名
+    2、配置环境变量
+    3、配置伪分布式
+2、大数据特点(5v特性)
+   2.1> 大体量(数据是从TB级别开始算)
+   2.2> 多样性(多种异构数据源)
+   2.3> 时效性(在一定时间限度内完成)
+   2.4> 准确性(结果保证一定的准确性)
+   2.5> 大价值(数据分析和数据挖掘探究数据深度价值)
+3、Hadoop特点
+   3.1> 优点
+      高可靠性、高扩展性、高效性、高容错性、低成本
+   3.2> 缺点
+      延迟性较高(适合大文件的离线批处理)
+      不适合存储大量小文件(namenode把元数据存储在内存中)
+      HDFS上的文件不支持修改,更适合一次写入,多次读取场景
+4、HDFS角色
+   4.1> Client客户端
+        拆分文件(128M)
+	与namenode交互获取元数据及节点信息
+	与datanode交互读取或者写入文件
+   4.2> NameNode(Master)
+        存储元数据
+	处理客户端的所有请求(读和写)
+   4.3> DataNode(Slave)
+        存储具体数据
+	汇报存储信息给namenode,由namenode来更新元数据
+   4.4> SecondaryNamenode
+        同步namenode的元数据以及日志信息
+	namenode挂掉,secondarynamenode可转正
+   4.5> Block
+        Hadoop2.0 和 Hadoop3.0中,切分为128M大小的块
+	Hadoop1.0中块大小为64M
+5、HDFS读写文件流程
+6、MapReduce过程
+   6.1> Map 映射
+   6.2> Shuffle | Sort  洗牌 | 排序(字典key)
+   6.3> Reduce 归约
+7、Hive诞生历史
+  DBA: 不懂编程,但是懂SQL
+  DBA: 如果能有一个工具,把我写的SQL语句能够自动转为复杂的MapReduce程序就好了,那我就不用再去学习编程了！！！ 
+  声音出现：这个工具诞生了,能够把SQL语句自动转为MR程序
+  Hive：
+    OLTP : 数据库系统(联机事务处理系统MySQL Oracle)
+    OLAP : 数据仓库系统(Hadoop)
+8、Hive安装
+   1、下载解压重命名
+   2、添加环境变量
+   3、安装MySQL的连接器(需要在MySQL中存储映射关系元数据)
+9、Hive本质
+   Hive中的一张表 和 hadoop的HDFS中的一个文件映射
+   将HQL语句转为底层的MapReduce程序,操作HDFS上的文件
+   创建库：/user/hive/warehouse/库名.db/
+   分工：
+      MySQL数据库(hive库)作用：存储元数据(metastore)
+      Hive作用：建库建表
+      HDFS作用：存储具体的数据
+10、Hive特点
+   10.1> 优点
+         学习成本低、开发效率高、兼容性好、进行分布式计算
+   10.2> 缺点
+         不支持行级别的增删改,不支持在线事务处理
+   10.3> 应用场景
+         大数据集的离线批处理(网络日志处理)
+11、内部表和外部表
+   11.1> 内部表(受hive管理的表)
+      受hive管理的表：元数据 和 具体数据(hdfs)都由hive来管理
+      创建表：/user/hive/warehouse/库名.db/表名/
+      上传文件到HDFS：
+          方法1：HDFS命令 hadoop fs -put xxx.csv  /user/hive/....
+          方法2：Hive命令 load data local inpath '/.../xx.csv' into table 表名;
+      删除表：
+          drop table 表名;
+	  Hive中表相关数据删除！！！
+	  MySQL的hive库中的元数据(metastore)删除！！！
+	  HDFS中的具体的文件(xxx.csv)删除！！！
+   11.2> 外部表(不受hive管理的表)
+      创建表：映射的文件路径由自己来指定(location)
+      删除表：drop table 表名;
+              Hive中相关数据删除！！！
+	      MySQL中元数据(metastore)删除！！！
+	      HDFS上的文件没有删除！！！
+   11.3> 步骤层面
+      11.3.1> 内部表流程
+          步骤1：创建表
+	  步骤2：上传文件到HDFS(hadoop fs -put 、load data ...)
+          步骤3：查询确认结果！！！
+      11.3.2> 外部表流程
+          步骤1：在HDFS上创建目录和上传文件
+	  步骤2：创建表(external、location '/目录')
+	  步骤3：查询确认结果！！！
+   11.4> 应用场景
+      内部表：临时表或中间表
+      外部表：大部分应用场景,比如一个文件可能被多人或者多个部门使用时
+12、复杂数据类型总结：
+   12.1> array<string>
+      类型:[]
+      定义：collection items terminated by '分隔符'
+      获取：字段名[index]
+         array_contains(字段名,'关键字')
+   12.2> map<string, string>
+      类型：{}
+      定义：map keys terminated by '分隔符'
+      获取：字段名[key]
+   12.3> struct<name:string,age:int>
+      类型：{}
+      定义：collection items terminated by '分隔符'
+      获取：字段名.name  字段名.age
+13、分区表总结
+   目的是为了优化查询,通过划分子目录的方式来避免全文件扫描,进而提升数据检索的速度。
+   一般情况下以日期时间或者类型作为分区的字段,并且分区的字段一定是表中不存在的字段
+14、分桶表
+   14.1> 创建普通表,并做好映射关系
+   14.2> 开启分桶功能,并指定桶的个数
+         set hive.enforce.bucketing=true;
+	 set mapreduce.job.reduces=4;
+   14.3> 创建分桶表,并指定分桶的字段
+         clustered by(id) into 4 buckets
+   14.4> 在分桶表中导入数据
+         insert into 桶表 select * from 普通表;
+
+
+
+
+***************************************
+
+MySQL如何优化查询(避免全表扫描)
+1、索引(index)
+2、SQL语句优化(*  in  not in)
+3、存储引擎层面优化
+   读操作多：MyISAM存储引擎
+   写操作多：InnoDB存储引擎
+   临时表：  MEMORY存储引擎
+
+Hive如何优化查询(如何避免全文件扫描)
+1、分区表 ：避免全文件扫描
+2、分桶表 ：避免全文件扫描
+
+MapReduce分布式 + 避免全文件扫描  == 快上加快
+
+
+
+
+
+
+普通表：
+表名：usertab
+文件：/user/hive/warehouse/库名.db/usertab/user.txt
+
+分区表：
+表名：usertab
+文件：/user/hive/warehouse/库名.db/usertab/date1=2020-01-01/a.txt
+文件：/user/hive/warehouse/库名.db/usertab/date1=2020-01-02/b.txt
+
+
+第1步：添加 2000-01-02 具体分区
+       alter table part_tab add partition(date1="2000-01-02");
+第2步：在   2000-01-02 分区中导入 employ2.txt 数据
+       load data local inpath 'xxx.txt' into table part_tab;
+
+
+第1步：创建对应目录结构及上传文件
+第2步：修复分区(msck repair 表名;)
+
+
+表名：weblog
+分区字段名：reporttime  (partitioned by(reporttime string))
+要求：外部表(external 、location '/weblog')
+      data1.txt: reporttime=2000-01-01 分区中的数据
+      data2.txt: reporttime=2000-01-02 分区中的数据
+步骤：
+   1、HDFS上创建目录结构,并上传对应文件
+      /weblog/reporttime=2000-01-01
+      /weblog/reporttime=2000-01-02
+      利用put上传对应文件到对应目录
+   2、创建外部表(指定分区字段)
+   3、修复分区
+
+
+第3步：select 字段,聚合 from 表名
+第1步：where ...
+第2步：group by ...
+第4步：having ...
+第5步：order by ...
+第6步：limit ...;
+
+
+
+
+
+
+
+
+
+

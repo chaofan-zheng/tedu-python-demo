@@ -1,0 +1,92 @@
+1、爬虫 
+   1.1> 爬虫工程师
+   1.2> 其他岗位的附加技能(数据分析、后端开发)
+2、Hadoop
+   2.1> 数据分析岗位的技能
+
+   Python数据分析工程师：
+        掌握：Python、numpy、pandas、matplotlib ...
+        了解：Hadoop、Hive ...
+
+   大数据分析工程师：
+        Java、Hadoop、Hive、HBase、Spark、Storm ...
+
+
+
+3、数据结构
+
+
+
+
+
+
+
+问题1：数据存储
+问题2：数据计算
+
+数据库更加侧重数据存储
+数据仓库(大数据)更加侧重于数据分析和数据挖掘
+
+
+
+
+HDFS：Hadoop Distributed File System
+
+
+
+1、Hadoop是什么？
+   分布式的数据仓库的工具,可以解决分布式存储和分布式计算的问题
+2、Hadoop特点
+   高可靠性
+   高扩展性
+   高效性
+   高容错性
+3、Hadoop应用
+   各种云平台(网盘)、网络日志、广告推荐、数据分析挖掘
+
+
+1、HDFS环境安装
+2、HDFS命令操作
+3、分布式计算原理-MapReduce
+4、重点
+   4.1> HDFS写文件流程
+   4.2> HDFS读文件流程
+   4.3> HDFS中各个角色和作用
+
+
+
+cd /usr/local/hadoop2.10/sbin/
+./start-all.sh
+  # 如果需要输入密码则输入(6次左右)：tarena
+
+jps
+  # namenode
+  # datanode
+  # secondarynamenode
+
+
+安装java：
+1、下载解压重命名
+   sudo tar -xf jdk.tar.gz -C /usr/local/
+   cd /usr/local/
+   sudo mv jdk1.8.0 jdk8
+
+2、添加环境变量
+   sudo vi ~/.bashrc
+   source ~/.bashrc
+
+
+安装hadoop：
+1、下载解压重命名
+
+2、配置环境变量
+
+3、配置伪分布式
+
+
+
+
+
+
+
+

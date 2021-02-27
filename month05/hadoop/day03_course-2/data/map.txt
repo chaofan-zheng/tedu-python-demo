@@ -1,0 +1,4 @@
+1,yaya,father:yababa#mother:yamama#brother:daya,28
+2,pandas,father:panbaba#mother:panmama#brother:dapan,25
+3,ai,father:aibaba#mother:aimama#brother:daai,30
+4,ds,father:dsbaba#mother:dsmama#brother:dads,29
